@@ -105,6 +105,9 @@ $(function(){
   filterDates($("tr"), theDate*1000, maxDate);
   function filterDates(dates, start, end) {
     $.each(dates, function(row, data) {
+        if ($("th", data).html()!=undefined) {
+            return;
+        }
         var thisstart = Number(parseDate($("td.start",data).text()));
         var thisend = Number(parseDate($("td.end",data).text()));
         if ((thisstart<start) || (thisend>end)) {
