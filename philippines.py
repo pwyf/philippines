@@ -98,6 +98,10 @@ def show_projects():
     projects_data = projects
     return render_template('projects.html', projects=projects_data)
 
+@app.route("/pledges/")
+def show_pledges():
+    return render_template('pledges.html')
+
 def get_projects():
     offset = 0
     newdata = []
@@ -112,7 +116,9 @@ def get_projects():
                 newdata.append((d['iati-activity']['iati-identifier'], d))
             offset+=50
         except urllib2.HTTPError:
-                break
+            break
+        except httplib.BadStatusLine:
+            break
     return dict(newdata)
 
 if __name__ == '__main__':

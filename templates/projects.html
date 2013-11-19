@@ -7,7 +7,16 @@
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
   border: 1px solid #aaaaaa;
 }
+small {
+  margin-bottom:14px;
+}
 </style>
+<h1>Projects</h1>
+<p class="lead">Use the time slider to display projects from the time period 
+you're interested in. Click on an individual project for more information.
+Remember &ndash; the data is partial because not all donors
+have yet published, and a lot of those who are may not be publishing the most
+up to date information.</p>
 <div class="controls">
   <h3>Filter date</h3>
   <div id="rangedval">
@@ -18,12 +27,15 @@
 </div>
 <table class="table table-condensed">
 <thead>
-<th>Project</th><th>Start</th><th>End</th>
+<th>Project</th><th>Organisations</th><th>Start</th><th>End</th>
 </thead>
 <tbody>
 {% for id, project in projects.items() %}
 <tr id="{{id}}">
   <td><a href="{{url_for('show_project', iati_identifier=makeIdentifierSafe(project["iati-activity"]["iati-identifier"]))}}">{{get_title(project["iati-activity"]["title"])}}</a></td>
+  <td>{% for org in makeList(project["iati-activity"]["participating-org"]) %}
+    <small><span class="label label-primary">{{org.text}}</span></small> 
+    {% endfor%}</td>
   <td class="start"><span title="{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "start")[1]}}">{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "start")[0]}}</span></td>
   <td class="end"><span title="{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "end")[1]}}">{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "end")[0]}}</span></td>
 </tr>
