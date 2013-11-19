@@ -72,10 +72,12 @@ def datetimeformat(value, format='%Y-%m-%dT%H:%M:%S'):
 
 def makeIdentifierSafe(identifier):
     identifier = re.sub("/", "___", identifier)
+    identifier = re.sub(":", ">>>", identifier)
     return identifier
 
 def reverseSafeIdentifier(identifier):
     identifier = re.sub("___", "/", identifier)
+    identifier = re.sub(">>>", ":", identifier)
     return identifier
 
 app.jinja_env.filters['datetimeformat'] = datetimeformat
