@@ -119,8 +119,6 @@ def get_projects():
             break
         except Exception:
             pass
-        if offset >50:
-            break
     return dict(newdata)
 
 if __name__ == '__main__':
