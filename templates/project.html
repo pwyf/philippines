@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h1>{{ get_title(project.title) }}</h1>
+{% if project["activity-status"] %}
+<div class="pull-right"><div class="alert alert-success">{{project["activity-status"]["text"]}}</div></div>
+{% endif %}
+{% if project.description %}
+<p class="lead">{{project.description.text}}</p>
+{% endif %}
+<p class="well">Last updated: {{project["last-updated-datetime"]|datetimeformat}}</p>
+<hr />
+<h3>Organisations</h3>
+<table class="table table-condensed">
+  <thead>
+    <th>Name</th>
+    <th>Role</th>
+  </thead>
+  {% for org in makeList(project["participating-org"]) %}
+    <tr><td>{{org.text}}</td><td>{{org.role}}</td></tr>
+  {% endfor %}
+  {% if project["reporting-org"] %}
+    <tr><td>{{project["reporting-org"].text}}</td><td>Reporting</td></tr>
+  {% endif %}
+</table>
+{% if project["sector"] %}
+<hr />
+<h3>Sectors</h3>
+<table class="table table-condensed">
+  <thead>
+    <th>Name</th>
+    <th>Percent</th>
+  </thead>
+  {% for sector in makeList(project["sector"]) %}
+    <tr><td><a href="#{{sector.code}}">{{sector.text}}</a></td><td>{{sector.percentage}}</td></tr>
+  {% endfor %}
+</table>
+{% endif %}
+<hr />
+<h3>Activity dates</h3>
+<table class="table table-condensed">
+  <thead>
+    <th>Type</th>
+    <th>Date</th>
+  </thead>
+  {% for date in makeList(project["activity-date"]) %}
+    <tr><td><a href="#{{date.type}}">{{date.type}}</a></td><td>{{getDate(date)}}</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

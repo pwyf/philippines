@@ -1,0 +1,119 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+.ui-widget-header {
+  background:#365e93;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+  border: 1px solid #aaaaaa;
+}
+</style>
+<div class="controls">
+  <h3>Filter date</h3>
+  <div id="rangedval">
+	Dates: <span id="rangeval">0 - 1000</span>
+  </div>
+  
+  <div id="rangeslider"></div>
+</div>
+<table class="table table-condensed">
+<thead>
+<th>Project</th><th>Start</th><th>End</th>
+</thead>
+<tbody>
+{% for id, project in projects.items() %}
+<tr id="{{id}}">
+  <td><a href="{{url_for('show_project', iati_identifier=makeIdentifierSafe(project["iati-activity"]["iati-identifier"]))}}">{{get_title(project["iati-activity"]["title"])}}</a></td>
+  <td class="start"><span title="{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "start")[1]}}">{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "start")[0]}}</span></td>
+  <td class="end"><span title="{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "end")[1]}}">{{getBestDate(makeList(project["iati-activity"]["activity-date"]), "end")[0]}}</span></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+<script>
+$(function(){
+
+  // parse a date in yyyy-mm-dd format
+  function parseDate(input) {
+    var parts = input.split('-');
+    // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
+    if (1 in parts) {
+      return new Date(parts[0], parts[1]-1, parts[2]).getTime();
+    } else if ((parts[0] != "Unknown") && (parts[0]!="None")) {
+      return new Date(parts[0], 0, 1).getTime();
+    }
+  }
+  function returnDate(milisecs) {
+    var d = new Date(milisecs*1000);
+    return d.toLocaleDateString();
+  }
+  function minTable() {
+    var startdates = $("td.start").map(function ()
+      {
+          if ($(this).val() == "Unknown") {
+            alert($(this).text());
+            return null;
+          } else {
+            var out = Number(parseDate($(this).text()));
+            if (isNaN(out)) {
+              return null;
+            } else {
+              return out;
+            }
+          }
+      }).get();
+     return Math.min.apply(null, startdates);
+  }
+  function maxTable() {
+    var enddates = $("td.end").map(function ()
+      {
+          if ($(this).val() == "Unknown") {
+            alert($(this).text());
+            return null;
+          } else {
+            var out = Number(parseDate($(this).text()));
+            if (isNaN(out)) {
+              return null;
+            } else {
+              return out;
+            }
+          }
+      }).get();
+     return Math.max.apply(null, enddates);
+  }
+  var minDate = minTable();
+  var maxDate = maxTable();
+  var theDate = 1375283215;
+
+  $('#rangeslider').slider({
+    range: true,
+    min: minDate/1000,
+    max: maxDate/1000,
+    values: [ theDate, maxDate/1000 ],
+    slide: function( event, ui ) {
+      minDate = ui.values[0]*1000;
+      maxDate = ui.values[1]*1000;
+      $('#rangeval').html(returnDate(ui.values[0])+" - "+returnDate(ui.values[1]));
+    }, 
+    stop: function ( event, ui ) {
+      console.warn(ui.values[0]);
+      filterDates($("tr"), minDate, maxDate);
+    }
+  });
+
+  $('#rangeval').html(returnDate(theDate)+" - "+returnDate(maxDate/1000));  
+  filterDates($("tr"), theDate*1000, maxDate);
+  function filterDates(dates, start, end) {
+    $.each(dates, function(row, data) {
+        var thisstart = Number(parseDate($("td.start",data).text()));
+        var thisend = Number(parseDate($("td.end",data).text()));
+        if ((thisstart<start) || (thisend>end)) {
+          $(data).fadeOut();
+        } else {
+          $(data).fadeIn();
+        }
+      });
+  };
+});
+</script>
+{% endblock %}
