@@ -117,7 +117,9 @@ def get_projects():
             offset+=50
         except urllib2.HTTPError:
             break
-        except httplib.BadStatusLine:
+        except Exception:
+            pass
+        if offset >50:
             break
     return dict(newdata)
 

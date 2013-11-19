@@ -1,12 +1,19 @@
-{% extends "layout.html" %}
+{% set active_page='index'%}{% extends "layout.html" %}
 {% block content %}
-<div class="jumbotron">
-  <h1>Philippines Projects</h1>
-  <p>This is a quick testing site to see what information is available about 
-     projects in the Philippines.</p>
-  <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for('show_projects')}}">Explore projects &raquo;
-     </a></p>
+<div class="clearfix pad4 intro">
+    <div id="map" class="globalMap"></div>
+    <div class="container first-container intro-message">
+      <div class="jumbotron">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h1>Philippines Projects</h1>
+        <p>This is a quick testing site to see what information is available about 
+           projects in the Philippines.</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="{{url_for('show_projects')}}">Explore projects &raquo;
+           </a></p>
+      </div>
+    </div>
 </div>
+<div class="container">
 <div class="row">
     <div class="col-md-6">
     <h2>What is this site?</h2>
@@ -40,14 +47,40 @@
     publishing to IATI will help to automate and speed up the process.</p>
     </div>
 </div>
-<!--
-what it is
 
-why it is important
+    <link href="{{url_for('static', filename='css/leaflet/leaflet.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.Default.css')}}" media="all" rel="stylesheet" type="text/css" />
 
-how to read it
+    <script src="{{url_for('static', filename='js/leaflet/leaflet.js')}}"></script>
+    <script src="{{url_for('static', filename='js/leaflet/leaflet.markercluster-src.js')}}"></script>
 
-where the data has come from
--->
+    <script type="text/javascript">
+    var geojsonMarkerOptions = {
+        radius: 8,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+    // OSM: http://{s}.tile.osm.org/{z}/{x}/{y}.png
+    layer_MapBox = new L.tileLayer(
+    'http://{s}.tiles.mapbox.com/v3/markbrough.map-qmxr8jb5/{z}/{x}/{y}.png',{
+        maxZoom: 18, attribution: 'MapBox Streets'
+    }
+    )
+    var map = new L.Map('map', {
+        center: new L.LatLng(10,122),
+        zoom: 7,
+        maxZoom: 15
+    });
+    layer_MapBox.addTo(map);
+    $(".jumbotron .close").click(function(){
+        $(".jumbotron").fadeOut(function(){
+            $(".first-container").addClass("tinyindex");
+        });
+    });
+    </script>
 
 {% endblock %}
