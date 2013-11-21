@@ -4,7 +4,8 @@ body.frontpage {
 .close {
     color: #FFFFFF !important;
     opacity: 0.7 !important;
-    text-shadow: 0 1px 0 #FFFFFF;
+    text-shadow: 0 1px 0 #000000;
+    font-size: 14px;
 }
 .close:focus, .close:hover {
     opacity: 0.9 !important;
