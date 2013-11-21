@@ -22,14 +22,27 @@
     activities and in response to Typhoon Haiyan.</p>
     <hr />
     <h2>Where does the data come from?</h2>
-    <p class="lead">Donors have only just begun to publish to IATI (the
+    <p class="lead">The data comes from open data published by donors. Donors 
+    have only just begun to publish to IATI (the
     <a href="http://aidtransparency.net">International Aid Transparency 
-    Initiative</a>), so the data will currently
-    be far from complete, and the quality depends on the individual donors.</p>
+    Initiative</a>), so the data will currently be far from complete, and the 
+    quality depends on the individual donors.</p>
     <p class="lead">The site is updated each night, but donors generally publish much less
     frequently, so it may be some time until it is complete.</p>
+    <h2>What can I do?</h2>
+    <p class="lead">In the short term, donors could help by providing their
+    data to <a href="http://unocha.org/">UNOCHA</a>'s 
+    <a href="http://fts.unocha.org/">Financial Tracking Service (FTS)</a>. In 
+    the medium term, publishing to IATI will help to automate and speed up the 
+    process.</p>
     </div>
     <div class="col-md-6">
+    <br />
+    <div class="alert alert-info">
+    <p class="lead">Visit <a href="http://www.gov.ph/faith/">FAiTH</a> for 
+    Philippines government data on pledges by individual countries. 
+    <a class="btn btn-info pull-right">Visit FAiTH &raquo;</a></p>
+    </div>
     <h2>Why publishing data is important</h2>
     <p class="lead">Publishing more data about aid activities should help
     everyone gain a better understanding of the overall picture. In a 
@@ -38,22 +51,12 @@
     <iframe frameborder="0" width="450" height="260" src="http://player.vimeo.com/video/24621998?title=0&amp;byline=0&amp;color=ffffff"></iframe>
     </div>
 </div>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-    <h2>What can I do?</h2>
-    <p class="lead">In the short term, donors could help by providing their
-    data to UNOCHA's Financial Tracking System (FTS). In the medium term, 
-    publishing to IATI will help to automate and speed up the process.</p>
-    </div>
-</div>
 
     <link href="{{url_for('static', filename='css/leaflet/leaflet.css')}}" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.css')}}" media="all" rel="stylesheet" type="text/css" />
-    <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.Default.css')}}" media="all" rel="stylesheet" type="text/css" />
+
+    <link type="text/css" media="screen" href="{{url_for('static', filename='css/bootstrap-glyphicons/css/bootstrap-glyphicons.css')}}" rel="stylesheet" />
 
     <script src="{{url_for('static', filename='js/leaflet/leaflet.js')}}"></script>
-    <script src="{{url_for('static', filename='js/leaflet/leaflet.markercluster-src.js')}}"></script>
 
     <script type="text/javascript">
     var geojsonMarkerOptions = {
@@ -65,14 +68,16 @@
         fillOpacity: 0.8
     };
     // OSM: http://{s}.tile.osm.org/{z}/{x}/{y}.png
+    // MB: http://{s}.tiles.mapbox.com/v3/markbrough.map-qmxr8jb5/{z}/{x}/{y}.png
+
     layer_MapBox = new L.tileLayer(
-    'http://{s}.tiles.mapbox.com/v3/markbrough.map-qmxr8jb5/{z}/{x}/{y}.png',{
-        maxZoom: 18, attribution: 'MapBox Streets'
+    'https://d.tiles.mapbox.com/v3/americanredcross.map-ms6tihx6/{z}/{x}/{y}.png',{
+        maxZoom: 18, attribution: 'Map data <a href="http://a.tiles.mapbox.com/v3/americanredcross.map-ms6tihx6/page.html">American Red Cross</a> and <a href="http://mapbox.com">MapBox Streets</a>'
     }
     )
     var map = new L.Map('map', {
-        center: new L.LatLng(10,122),
-        zoom: 7,
+        center: new L.LatLng(11.24,125),
+        zoom: 14,
         maxZoom: 15
     });
     layer_MapBox.addTo(map);
