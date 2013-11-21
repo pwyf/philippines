@@ -56,6 +56,12 @@
     <link href="{{url_for('static', filename='css/leaflet/leaflet.css')}}" media="all" rel="stylesheet" type="text/css" />
     <script src="{{url_for('static', filename='js/leaflet/leaflet.js')}}"></script>
 
+    <!--[if IE]> 
+    <style>
+    .frontpage .first-container .jumbotron {
+        background: transparent;
+    }
+    </style> <![endif]-->
     <script type="text/javascript">
     var geojsonMarkerOptions = {
         radius: 8,
