@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_frozen import Freezer
 import sys
+import jinja2
 
 app = Flask(__name__.split('.')[0])
 app.config['FREEZER_RELATIVE_URLS'] = True
@@ -70,6 +71,36 @@ def datetimeformat(value, format='%Y-%m-%dT%H:%M:%S'):
     except TypeError:
         return "Unknown"
 
+def getTransactionType(value):
+    types={
+        'C': 'Commitment',
+        'D': 'Disbursement',
+        'E': 'Expenditure',
+        'IF': 'Incoming Funds',
+        'IR': 'Interest Repayment',
+        'LR': 'Loan Repayment',
+        'R': 'Reimbursement',
+        'QP': 'Purchase of Equity',
+        'QS': 'Sale of Equity',
+        'CG': 'Credit Guarantee'
+    }
+    try:
+        return types[value]
+    except KeyError:
+        return ""
+
+def getDateType(value):
+    types = {
+        'start-planned': 'Planned start',
+        'start-actual': 'Actual start',
+        'end-planned': 'Planned end',
+        'end-actual': 'Actual end'
+    }
+    try:
+        return types[value]
+    except KeyError:
+        return ""
+
 def makeIdentifierSafe(identifier):
     identifier = re.sub("/", "___", identifier)
     identifier = re.sub(":", ">>>", identifier)
@@ -80,12 +111,42 @@ def reverseSafeIdentifier(identifier):
     identifier = re.sub(">>>", ":", identifier)
     return identifier
 
+def realLocation(project):
+    # Precision 7 is level of the country, so not helpful in this context
+    if project.get('location'):
+        if (makeList(project['location'])[0].get('coordinates') and 
+            (makeList(project['location'])[0]['coordinates'].get('precision') == '7')):
+            return False
+        return True
+    return False
+
+def getLocations(project):
+    locations = makeList(project['location'])
+    out = []
+    for location in locations:
+        if location.get('coordinates'):
+            latitude = location['coordinates']['latitude']
+            longitude = location['coordinates']['longitude']
+            name = location.get('name')
+            out.append((latitude, longitude, name))
+    return jinja2.Markup(json.dumps(out))
+
+def coordinates(project):
+    if makeList(project['location'])[0].get('coordinates'):
+        return True
+    return False
+
 app.jinja_env.filters['datetimeformat'] = datetimeformat
 app.jinja_env.globals.update(get_title=get_title)
 app.jinja_env.globals.update(makeList=makeList)
 app.jinja_env.globals.update(getDate=getDate)
 app.jinja_env.globals.update(getBestDate=getBestDate)
 app.jinja_env.globals.update(makeIdentifierSafe=makeIdentifierSafe)
+app.jinja_env.globals.update(getTransactionType=getTransactionType)
+app.jinja_env.globals.update(getDateType=getDateType)
+app.jinja_env.globals.update(realLocation=realLocation)
+app.jinja_env.globals.update(coordinates=coordinates)
+app.jinja_env.globals.update(getLocations=getLocations)
 
 @app.route("/projects/<iati_identifier>/")
 def show_project(iati_identifier=None):

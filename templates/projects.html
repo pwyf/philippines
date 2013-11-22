@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% set active_page='projects'%}{% set title = "Projects" %}{% extends "layout.html" %}
 {% block content %}
 <style>
 .ui-widget-header {
@@ -42,6 +42,13 @@ up to date information.</p>
 {% endfor %}
 </tbody>
 </table>
+
+<div class="alert alert-warning">
+<h4>Is that it?</h4>
+<p>Remember, not all donors have started publishing data yet, and others are not
+publishing data on their most recent projects.</p>
+</div>
+
 <script>
 $(function(){
 
