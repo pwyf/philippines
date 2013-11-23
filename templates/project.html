@@ -115,6 +115,9 @@
         {% if coordinates(project) %}
 
           <link href="{{url_for('static', filename='css/leaflet/leaflet.css')}}" media="all" rel="stylesheet" type="text/css" />
+          <!--[if lte IE 8]>
+              <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+          <![endif]-->
           <script src="{{url_for('static', filename='js/leaflet/leaflet.js')}}"></script>
           <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.css')}}" media="all" rel="stylesheet" type="text/css" />
           <link href="{{url_for('static', filename='css/leaflet/MarkerCluster.Default.css')}}" media="all" rel="stylesheet" type="text/css" />
