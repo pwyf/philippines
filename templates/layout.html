@@ -1,6 +1,14 @@
-{% set active_page = active_page -%}<html>
+{% set active_page = active_page -%}<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>Philippines projects browser{% if title %} &raquo; {{title}}{% endif %}</title>
+<title>Philippines Projects{% if title %} &raquo; {{title}}{% endif %}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@aidtransparency">
+{% if active_page='index' %}<meta name="twitter:creator" content="@mark_brough">{% endif %}
+<meta name="twitter:title" content="Philippines Projects{% if title %} &mdash; {{title}}{% endif%}">
+<meta name="twitter:description" content="This site shows data that donors have already published about their aid activities in the Philippines &mdash; both existing activities and in response to Typhoon Haiyan.">
+
 <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" media="all" rel="stylesheet" type="text/css" />
 <link href="{{url_for('static', filename='css/smoothness/jquery-ui-1.10.3.custom.min.css')}}" media="all" rel="stylesheet" type="text/css" />
 <link href="{{url_for('static', filename='css/site.css')}}" media="all" rel="stylesheet" type="text/css" />
